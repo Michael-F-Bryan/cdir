@@ -31,6 +31,6 @@ conditions.
 The intent of this crate is to be free of soundness bugs. The developers will
 do their best to avoid them, and welcome help in analysing and fixing them.
 
-[blog]:
+[blog]: https://adventures.michaelfbryan.com/posts/continuous-deployment-in-rust/
 [api-docs]: https://michael-f-bryan.github.io/cdir
 [crev]: https://github.com/crev-dev/cargo-crev

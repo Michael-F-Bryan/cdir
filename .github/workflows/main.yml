@@ -8,19 +8,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - name: Initialize the Rust Toolchain
+      uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
-    - uses: actions-rs/cargo@v1
+    - name: Type Checking
+      uses: actions-rs/cargo@v1
       with:
         command: check
         args: --workspace --verbose
-    - uses: actions-rs/cargo@v1
+    - name: Compile
+      uses: actions-rs/cargo@v1
       with:
         command: build
         args: --workspace --verbose
-    - uses: actions-rs/cargo@v1
+    - name: Test
+      uses: actions-rs/cargo@v1
       with:
         command: test
         args: --workspace --verbose
