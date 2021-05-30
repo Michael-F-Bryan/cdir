@@ -12,6 +12,10 @@ jobs:
         - ubuntu-latest
         - macos-latest
         - windows-latest
+        rust:
+        - stable
+        - nightly
+        - 1.54 # Minimum Supported Rust Version
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -19,7 +23,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: ${{ matrix.rust }}
     - name: Type Checking
       uses: actions-rs/cargo@v1
       with:
