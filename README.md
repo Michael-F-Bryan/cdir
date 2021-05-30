@@ -1,6 +1,6 @@
 # Continuous Deployment in Rust
 
-[![Continuous integration](https://github.com/Michael-F-Bryan/cdir/workflows/Continuous%20integration/badge.svg?branch=master)](https://github.com/Michael-F-Bryan/cdir/actions)
+[![Continuous Integration](https://github.com/Michael-F-Bryan/cdir/actions/workflows/main.yml/badge.svg)](https://github.com/Michael-F-Bryan/cdir/actions/workflows/main.yml)
 
 ([API Docs][api-docs])
 
