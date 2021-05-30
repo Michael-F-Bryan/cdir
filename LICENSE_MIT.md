@@ -1,4 +1,4 @@
-Copyright (c) 2021 Michael Bryan <michaelfbryan@gmail.com>
+Copyright (c) {{ "now" | date: "%Y" }} {{authors}}
 
 Permission is hereby granted, free of charge, to any
 person obtaining a copy of this software and associated
