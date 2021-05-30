@@ -25,7 +25,7 @@ jobs:
           ~/.cargo/registry
           ~/.cargo/git
           target
-          key: ${{ matrix.rust }}-${{ runner.os }}-${{ github.workflow }}-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ matrix.rust }}-${{ runner.os }}-${{ github.workflow }}-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
     - name: Initialize the Rust Toolchain
       uses: actions-rs/toolchain@v1
       with:
