@@ -15,10 +15,17 @@ jobs:
         rust:
         - stable
         - nightly
-        - 1.54 # Minimum Supported Rust Version
+        - 1.52 # Minimum Supported Rust Version
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+          path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+          key: ${{ matrix.rust }}-${{ runner.os }}-${{ github.workflow }}-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
     - name: Initialize the Rust Toolchain
       uses: actions-rs/toolchain@v1
       with:
