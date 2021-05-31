@@ -46,3 +46,31 @@ jobs:
       with:
         command: test
         args: --workspace --verbose
+
+  api-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ matrix.rust }}-${{ runner.os }}-${{ github.workflow }}-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+    - name: Initialize the Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: ${{ matrix.rust }}
+    - name: Generate API Docs
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: doc --workspace --verbose
+    - name: Upload API Docs
+      uses: JamesIves/github-pages-deploy-action@4.1.1
+      if: github.ref == 'refs/heads/master'
+      with:
+        branch: gh-pages
+        folder: target/doc
