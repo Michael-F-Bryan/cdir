@@ -1,2 +1,2 @@
 [workspace]
-members = ["cli", "core", "python"]
+members = ["cli", "core", "python", "xtask"]
