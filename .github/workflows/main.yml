@@ -62,7 +62,7 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: ${{ matrix.rust }}
+        toolchain: stable
     - name: Generate API Docs
       uses: actions-rs/cargo@v1
       with:
