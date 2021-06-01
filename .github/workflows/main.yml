@@ -66,8 +66,8 @@ jobs:
     - name: Generate API Docs
       uses: actions-rs/cargo@v1
       with:
-        command: test
-        args: doc --workspace --verbose
+        command: doc
+        args: --workspace --verbose
     - name: Upload API Docs
       uses: JamesIves/github-pages-deploy-action@4.1.1
       if: github.ref == 'refs/heads/master'
