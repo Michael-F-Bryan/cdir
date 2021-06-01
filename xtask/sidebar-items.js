@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["CDIR_CLI_BINARY",""]],"enum":[["Cmd",""]],"fn":[["add_file",""],["compile_cdir_cli",""],["dist",""],["filename",""],["generate_release_bundle",""],["git_repo_root",""],["main",""]],"static":[["DEFAULT_PROJECT_ROOT",""]]});
