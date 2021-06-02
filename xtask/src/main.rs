@@ -10,6 +10,7 @@ use structopt::StructOpt;
 use zip::{write::FileOptions, ZipWriter};
 
 fn main() -> Result<(), Error> {
+    env_logger::init();
     let cmd = Cmd::from_args();
 
     match cmd {
@@ -24,7 +25,7 @@ const CDIR_CLI_BINARY: &str = "cdir-cli.exe";
 #[cfg(not(windows))]
 const CDIR_CLI_BINARY: &str = "cdir-cli";
 
-#[derive(StructOpt)]
+#[derive(Debug, StructOpt)]
 pub enum Cmd {
     /// Create a release archive.
     Dist {
@@ -35,6 +36,8 @@ pub enum Cmd {
 }
 
 fn dist(project_root: PathBuf) -> Result<(), Error> {
+    log::info!("Generating a release bundle");
+
     compile_cdir_cli(&project_root)?;
     generate_release_bundle(&project_root)?;
 
@@ -44,6 +47,7 @@ fn dist(project_root: PathBuf) -> Result<(), Error> {
 fn generate_release_bundle(project_root: &Path) -> Result<(), Error> {
     let target = project_root.join("target");
     let filename = filename(&target);
+    log::debug!("Generating a release bundle");
 
     let f = File::create(&filename)
         .with_context(|| format!("Unable to open \"{}\" for writing", filename.display()))?;
@@ -61,6 +65,11 @@ fn generate_release_bundle(project_root: &Path) -> Result<(), Error> {
         .context("Unable to finalize the zipfile")?
         .flush()
         .context("Unable to flush to disk")?;
+
+    log::debug!(
+        "The release bundle was written to \"{}\"",
+        filename.display()
+    );
 
     Ok(())
 }
@@ -83,13 +92,20 @@ where
         .with_context(|| format!("Unable to open \"{}\" for reading", filename.display()))?;
 
     w.start_file(name, FileOptions::default())?;
-    std::io::copy(&mut f, w)?;
+    let bytes_written = std::io::copy(&mut f, w)?;
     w.flush()?;
+
+    log::debug!(
+        "Added \"{}\" to the bundle ({} bytes)",
+        filename.display(),
+        bytes_written
+    );
 
     Ok(())
 }
 
 fn compile_cdir_cli(project_root: &Path) -> Result<(), Error> {
+    log::debug!("Compiling `cdir-cli`");
     let cargo = std::env::var("CARGO").unwrap_or_else(|_| String::from("cargo"));
 
     let status = Command::new(cargo)
