@@ -16,7 +16,7 @@ jobs:
           - linux
           - windows
           - macos
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v2
