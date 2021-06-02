@@ -39,11 +39,11 @@ jobs:
       with:
         command: xtask
         args: dist
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: bundle-${{ matrix.asset_name }}
-          path: "target/cdir.*.zip"
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: bundle-${{ matrix.asset_name }}
+        path: "target/cdir.*.zip"
 
   create-release:
     name: Create Nightly Release
