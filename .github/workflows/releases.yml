@@ -12,13 +12,10 @@ jobs:
   build:
     strategy:
       matrix:
-        include:
-          - name: linux
-            os: ubuntu-latest
-          - name: windows
-            os: windows-latest
-          - name: macos
-            os: macos-latest
+        os:
+          - linux
+          - windows
+          - macos
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -42,7 +39,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: bundle-${{ matrix.asset_name }}
+        name: bundle-${{ runner.os }}
         path: "target/cdir.*.zip"
 
   create-release:
@@ -70,4 +67,3 @@ jobs:
           title: "Nightly Release"
           files: |
             nightly/*.zip
-            nightly/*.whl
