@@ -1,0 +1,73 @@
+name: Releases
+
+on:
+  schedule:
+  - cron: '0 0 * * *' # midnight UTC
+  workflow_dispatch:
+
+env:
+  RUST_LOG: debug
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - name: linux
+            os: ubuntu-latest
+          - name: windows
+            os: windows-latest
+          - name: macos
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-${{ github.workflow }}-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+    - name: Initialize the Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - name: Generate Release Bundle
+      uses: actions-rs/cargo@v1
+      with:
+        command: xtask
+        args: dist
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundle-${{ matrix.asset_name }}
+          path: "target/cdir.*.zip"
+
+  create-release:
+    name: Create Nightly Release
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Fetch Pre-Compiled Binaries
+        uses: actions/download-artifact@v2
+        with:
+          path: nightly
+      - name: Move all up
+        run: mv nightly/**/* nightly/
+      - name: Print Artifacts
+        run: ls -la nightly
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        if: github.ref == 'refs/heads/master'
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "nightly"
+          prerelease: true
+          title: "Nightly Release"
+          files: |
+            nightly/*.zip
+            nightly/*.whl
