@@ -2,8 +2,7 @@ name: Releases
 
 on:
   schedule:
-    #- cron: '0 0 * * *' # midnight UTC
-  - cron: '0/5 * * * *' # midnight UTC
+  - cron: '0 0 * * *' # midnight UTC
   workflow_dispatch:  # Lets us trigger the build manually if desired
 
 env:
